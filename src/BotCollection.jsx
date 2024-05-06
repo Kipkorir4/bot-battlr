@@ -1,21 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import SortBar from './SortBar';
+import FilterBar from './FilterBar';  
 
 const BotCollection = () => {
   let [bots, setBots] = useState([]);
   let [sortBy, setSortBy] = useState();
+  const [filters, setFilters] = useState([]);
+  
+
+  // Define a function to handle filter change
+  const handleFilterChange = (selectedClasses) => {
+    setFilters(selectedClasses);
+    // setBots(prevBots => selectedClasses.length <= 0 ? prevBots : prevBots.filter(a => selectedClasses.includes(a.bot_class)));
+    // console.log(bots);
+    
+  };
+
+  useEffect(() => {
+    // Filter the bots array based on selected classes when filters change
+    setBots(prevBots => filters.length <= 0 ? prevBots : prevBots.filter(a => filters.includes(a.bot_class)));
+  }, [filters]);
+
   const handleSortChange = (selectedSortBy) => {
     setSortBy(selectedSortBy);
     
     // bots = bots.filter(bot => Object.keys(bots).includes(selectedSortBy))
-    // setBots(prevBots => prevBots.sort((a, b) => b.selectedSortBy - a.selectedSortBy).map(bot => bot));
-    const sortedBots = bots.sort((a, b) => b.selectedSortBy - a.selectedSortBy)
-    setBots(prevBots => sortedBots.map(bot => {
+    setBots(prevBots => prevBots.sort((a, b) => b[selectedSortBy] - a[selectedSortBy]));
+    // const sortedBots = bots.sort((a, b) => b.armor - a.armor)
+    // setBots(prevBots => sortedBots.map(bot => {
      
-        return { ...bot };
+    //     return { ...bot };
      
       
-    }));
+    // }));
 
     console.log(bots);
   };
@@ -98,6 +115,8 @@ const BotCollection = () => {
       <hr/>
       <hr/>
       <SortBar onSortChange={handleSortChange}/>
+      <hr/>
+      <FilterBar onFilterChange={handleFilterChange}/>
       <ul className='bot-collection'>
         {bots.filter(b => !b.enlisted ).map(bot => (
           <li className='bot-li' key={bot.id}>

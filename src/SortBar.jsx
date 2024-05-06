@@ -11,13 +11,16 @@ function SortBar(props) {
   };
 
   return (
+    <>
+    <h2>Sort By</h2>
     <div className="sort-bar">
-      <select value={sortBy} onChange={handleChange}>
+      <select className='the-bar' value={sortBy} onChange={handleChange}>
         <option value="health">Health</option>
         <option value="damage">Damage</option>
         <option value="armor">Armor</option>
       </select>
     </div>
+    </>
   );
 }
 

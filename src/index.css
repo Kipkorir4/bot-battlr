@@ -41,17 +41,16 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #0ee1e8;
+  background-color: #000000d5;
   cursor: pointer;
-  transition: border-color 0.25s;
-<<<<<<< HEAD
+  transition: background-color 0.25s;
   margin-right: 3px;
-=======
-  margin-right: 15px;
->>>>>>> 44d668fcc5911c2ef5bde5d513625366ac22a73d
 }
+
 button:hover {
-  border-color: #646cff;
+  color: #000000d5;
+  background-color: #f9f9f9;
+  border-color: #000000d5;
 }
 button:focus,
 button:focus-visible {
@@ -106,4 +105,23 @@ ul:first-of-type{
 
 h1 {
   text-align: center;
+}
+
+.sort-bar {
+  padding: 10px 0px;
+}
+
+.the-bar {
+  width: 400px;
+  height: 50px;
+  font-size: large;
+  padding: 5px 10px;
+}
+
+input {
+  font-size: larger;
+}
+
+label {
+  font-size: larger;
 }
