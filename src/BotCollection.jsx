@@ -1,7 +1,25 @@
 import React, { useState, useEffect } from 'react';
+import SortBar from './SortBar';
 
 const BotCollection = () => {
-  const [bots, setBots] = useState([]);
+  let [bots, setBots] = useState([]);
+  let [sortBy, setSortBy] = useState();
+  const handleSortChange = (selectedSortBy) => {
+    setSortBy(selectedSortBy);
+    
+    // bots = bots.filter(bot => Object.keys(bots).includes(selectedSortBy))
+    // setBots(prevBots => prevBots.sort((a, b) => b.selectedSortBy - a.selectedSortBy).map(bot => bot));
+    const sortedBots = bots.sort((a, b) => b.selectedSortBy - a.selectedSortBy)
+    setBots(prevBots => sortedBots.map(bot => {
+     
+        return { ...bot };
+     
+      
+    }));
+
+    console.log(bots);
+  };
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,7 +58,7 @@ const BotCollection = () => {
 
   const dischargeBot = async (botId) => {
     try {
-            const response = await fetch(`https://bots-h0jj.onrender.com/bots/${botId}`, {
+      const response = await fetch(`https://bots-h0jj.onrender.com/bots/${botId}`, {
         method: 'DELETE'
       });
       if (!response.ok) {
@@ -53,11 +71,36 @@ const BotCollection = () => {
   };
 
   return (
-    <div>
+    <div className='main-cont'>
       <h2>Bot Collection</h2>
-      <ul>
-        {bots.map(bot => (
-          <li key={bot.id}>
+      <ul className='bot-collection'>
+        {bots.filter(b => b.enlisted ).map(bot => (
+          <li className='bot-li' key={bot.id}>
+            <img src={bot.avatar_url} alt={bot.name} />
+            <div>
+              <h3>{bot.name}</h3>
+              <p>Health: {bot.health}</p>
+              <p>Damage: {bot.damage}</p>
+              <p>Armor: {bot.armor}</p>
+              <p>Class: {bot.bot_class}</p>
+              {!bot.enlisted && <button onClick={() => enlistBot(bot.id)}>Enlist</button>}
+              {bot.enlisted && (
+                <>
+                  <p>Enlisted</p>
+                  <button onClick={() => releaseBot(bot.id)}>Release</button>
+                  <button onClick={() => dischargeBot(bot.id)}>Discharge</button>
+                </>
+              )}
+            </div>
+          </li>
+        ))}
+      </ul>
+      <hr/>
+      <hr/>
+      <SortBar onSortChange={handleSortChange}/>
+      <ul className='bot-collection'>
+        {bots.filter(b => !b.enlisted ).map(bot => (
+          <li className='bot-li' key={bot.id}>
             <img src={bot.avatar_url} alt={bot.name} />
             <div>
               <h3>{bot.name}</h3>
